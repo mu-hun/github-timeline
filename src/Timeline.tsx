@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
-import { setTokenWrapper, requestFeedsWrapper } from './utils';
+import { setTokenWrapper, requestReceivedEventsWrapper } from './utils';
 
 const fetchDataWrapper = async () => {
   await setTokenWrapper();
-  const res = await requestFeedsWrapper();
-  console.log(res.data);
+  const res = await requestReceivedEventsWrapper();
+  console.log(res);
 };
 
 export default function TimeLine() {

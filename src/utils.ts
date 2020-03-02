@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { Code, Feeds, accessToken } from './types';
+import {
+  Code,
+  accessToken,
+  User,
+  ReceivedEventsProp,
+  ReceivedEvents,
+} from './types';
 
 import qs from 'query-string';
 
@@ -35,14 +41,24 @@ const getTokenFromProxy = async (code: Code) => {
   return { access_token: res.data.access_token };
 };
 
-export const requestFeeds = (token: string) =>
-  axios.get<Feeds>('https://api.github.com/feeds', {
-    headers: { Authorization: 'token ' + token },
-  });
+const requestName = async (token: string) =>
+  (
+    await axios.get<User>('https://api.github.com/user', {
+      headers: { Authorization: 'token ' + token },
+    })
+  ).data;
 
-export const requestFeedsWrapper = () => {
+const requestReceivedEvents = ({ token, name, page }: ReceivedEventsProp) =>
+  axios.get<ReceivedEvents>(
+    `https://api.github.com/users/${name}/received_events?page=${page || 1}`,
+    { headers: { Authorization: 'token ' + token } }
+  );
+
+export const requestReceivedEventsWrapper = async () => {
   const token = getToken();
   if (token === null)
     throw Error('[utils.ts] requestFeedWrapper 에서 토큰을 찾지 못함');
-  return requestFeeds(token);
+  const { login } = await requestName(token);
+  const { data } = await requestReceivedEvents({ token, name: login });
+  return data;
 };
