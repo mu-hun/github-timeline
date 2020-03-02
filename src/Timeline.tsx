@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { setTokenWrapper, requestReceivedEventsWrapper } from './utils';
+import { setTokenWrapper, requestReceivedEventsInit } from './utils';
 
 const fetchDataWrapper = async () => {
   await setTokenWrapper();
-  const res = await requestReceivedEventsWrapper();
+  const res = await requestReceivedEventsInit();
   console.log(res);
 };
 
