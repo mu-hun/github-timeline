@@ -14,7 +14,7 @@ export default function TimeLine() {
 
   useEffect(() => {
     fetchDataWrapper();
-  });
+  }, []);
 
   return (
     <div>{timeline ? <Cards data={timeline} /> : <span>TimeLine</span>}</div>
