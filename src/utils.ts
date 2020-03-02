@@ -55,7 +55,11 @@ const requestName = async (token: string) => {
   return { name: login };
 };
 
-const requestReceivedEvents = ({ token, name, page }: ReceivedEventsProp) =>
+export const requestReceivedEvents = ({
+  token,
+  name,
+  page,
+}: ReceivedEventsProp) =>
   axios.get<ReceivedEvents>(
     `https://api.github.com/users/${name}/received_events?page=${page || 1}`,
     { headers: { Authorization: 'token ' + token } }
@@ -69,4 +73,10 @@ export const requestReceivedEventsInit = async () => {
   const name = getUser()!;
   const { data } = await requestReceivedEvents({ token, name });
   return data;
+};
+
+export const getRequestReceivedEventsProp = () => {
+  const token = getToken()!;
+  const name = getUser()!;
+  return { token, name };
 };
