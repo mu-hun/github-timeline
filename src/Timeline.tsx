@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { setTokenWrapper, requestReceivedEventsInit } from './utils';
-
-const fetchDataWrapper = async () => {
-  await setTokenWrapper();
-  const res = await requestReceivedEventsInit();
-  console.log(res);
-};
+import { ReceivedEvents } from './types';
+import Cards from './components/Cards';
 
 export default function TimeLine() {
+  const [timeline, setTimeline] = useState<ReceivedEvents>();
+  const fetchDataWrapper = async () => {
+    await setTokenWrapper();
+    const res = await requestReceivedEventsInit();
+    setTimeline(res);
+  };
+
   useEffect(() => {
     fetchDataWrapper();
   });
-  return <div>TimeLine</div>;
+
+  return (
+    <div>{timeline ? <Cards data={timeline} /> : <span>TimeLine</span>}</div>
+  );
 }
