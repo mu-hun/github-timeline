@@ -5,6 +5,9 @@ import * as serviceWorker from './serviceWorker';
 
 import { StoreProvider } from './store/contexts';
 
+import './styles/reset.css';
+import './styles/theme.css';
+
 ReactDOM.render(
   <StoreProvider>
     <Portal />
