@@ -3,8 +3,8 @@ import {
   getTokenFromProxy,
   requestName,
   requestReceivedEvents,
-} from '../utils';
-import { ReceivedEvents } from '../types';
+} from '../utils/fetch';
+import { ReceivedEvents } from '../utils/types';
 
 const getToken = () => localStorage.getItem('token');
 const getUser = () => localStorage.getItem('username');

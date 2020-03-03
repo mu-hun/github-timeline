@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReceivedEvents } from '../types';
+import { ReceivedEvents } from '../utils/types';
 import Card, { CardProp } from './Card';
 
 export type CardsProp = { data: ReceivedEvents };
