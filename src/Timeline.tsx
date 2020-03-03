@@ -1,48 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import {
-  setTokenWrapper,
-  requestReceivedEvents,
-  requestReceivedEventsInit,
-  getRequestReceivedEventsProp,
-} from './utils';
-import { ReceivedEvents } from './types';
 import Cards from './components/Cards';
+
+import { useStore } from './store/contexts';
+import { useObserver } from 'mobx-react';
 import { More } from './components/Button';
 
 export default function TimeLine() {
-  const [timeline, setTimeline] = useState<ReceivedEvents>();
-  const [page, setPage] = useState<number>(1);
+  const store = useStore();
 
-  const fetchDataWrapper = async () => {
-    await setTokenWrapper();
-    const res = await requestReceivedEventsInit();
-    setTimeline(res);
+  const prepareToFetch = async () => {
+    await store.setToken();
+    await store.setUsername();
   };
 
-  const handleClick = async () => {
-    setPage(page + 1);
-    const { data } = await requestReceivedEvents({
-      ...getRequestReceivedEventsProp(),
-      page,
-    });
-    setTimeline([...timeline, ...data]);
+  const fetchEvents = async () => {
+    if (store.token.length === 0) await prepareToFetch();
+    await store.updateEvents();
   };
 
   useEffect(() => {
-    fetchDataWrapper();
+    fetchEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
+  return useObserver(() => (
     <div>
-      {timeline ? (
+      {store.data ? (
         <>
-          <Cards data={timeline} />
-          <More onClick={handleClick}>More</More>
+          <Cards data={store.data} />
+          <More onClick={store.updateEvents}>More</More>
         </>
       ) : (
         <span>Loding..</span>
       )}
     </div>
-  );
+  ));
 }
