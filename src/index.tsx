@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Portal from './Portal';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { StoreProvider } from './store/contexts';
@@ -10,7 +10,7 @@ import './styles/theme.css';
 
 ReactDOM.render(
   <StoreProvider>
-    <Portal />
+    <App />
   </StoreProvider>,
   document.getElementById('root')
 );
