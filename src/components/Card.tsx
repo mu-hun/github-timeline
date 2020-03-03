@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { MarginRight, Flex, Bold } from '../styles';
+import { MarginRight, Flex, BoldLink } from '../styles';
 
 type Profile = { avatarURL: string; username: string };
 type Content = { actor: string; repo: string };
@@ -50,12 +50,8 @@ const Starred = styled.span`
 
 const ContentWrapper = ({ actor, repo }: Content) => (
   <Content>
-    <Bold as="a" href={'https://github.com/' + actor}>
-      {actor}
-    </Bold>
+    <BoldLink href={'https://github.com/' + actor}>{actor}</BoldLink>
     <Starred>starred</Starred>
-    <Bold as="a" href={'https://github.com/' + repo}>
-      {repo}
-    </Bold>
+    <BoldLink href={'https://github.com/' + repo}>{repo}</BoldLink>
   </Content>
 );
