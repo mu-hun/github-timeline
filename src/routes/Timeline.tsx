@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 
-import Cards from './components/Cards';
+import Cards from '../components/Cards';
 
-import { useStore } from './store/contexts';
+import { useStore } from '../store/contexts';
 import { useObserver } from 'mobx-react';
-import { More } from './components/Button';
+import { More } from '../components/Button';
 
 export default function TimeLine() {
   const store = useStore();
