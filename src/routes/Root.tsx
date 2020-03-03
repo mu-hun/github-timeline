@@ -1,6 +1,6 @@
 import React from 'react';
-import { authLink } from './const';
-import { useStore } from './store/contexts';
+import { authLink } from '../const';
+import { useStore } from '../store/contexts';
 
 import { Redirect } from 'react-router-dom';
 
