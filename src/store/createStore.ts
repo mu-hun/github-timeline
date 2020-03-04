@@ -25,6 +25,10 @@ export default function createStore() {
       localStorage.setItem('username', name);
       this.username = name;
     },
+    async initConfig() {
+      await this.setToken();
+      await this.setUsername();
+    },
     async updateEvents() {
       const { data } = await requestReceivedEvents({
         token: this.token,
@@ -33,6 +37,10 @@ export default function createStore() {
       });
       this.page++;
       this.data = [...this.data, ...data];
+    },
+    async updateEventsInit() {
+      if (this.token.length === 0) await this.initConfig();
+      this.updateEvents();
     },
   };
 }
