@@ -18,6 +18,9 @@ export default function createStore() {
     isHaveItem() {
       return this.data.length > 0;
     },
+    isHaveToken() {
+      return this.token.length > 0;
+    },
     async setToken() {
       const { access_token } = await getTokenFromProxy(getCode());
       localStorage.setItem('token', access_token);

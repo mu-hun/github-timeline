@@ -4,16 +4,16 @@ import { useStore } from '../../store/contexts';
 import View from './View';
 
 export default function TimeLine() {
-  const store = useStore();
+  const { isHaveToken, setToken, setUsername, updateEvents } = useStore();
 
   const prepareToFetch = async () => {
-    await store.setToken();
-    await store.setUsername();
+    await setToken();
+    await setUsername();
   };
 
   const fetchEvents = async () => {
-    if (store.token.length === 0) await prepareToFetch();
-    await store.updateEvents();
+    if (!isHaveToken()) await prepareToFetch();
+    await updateEvents();
   };
 
   useEffect(() => {
