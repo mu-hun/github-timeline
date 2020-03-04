@@ -4,20 +4,24 @@ import { useObserver } from 'mobx-react';
 import { useStore } from '../../store/contexts';
 
 import { ReceivedEvents } from '../../utils/types';
+
 import Card, { CardProp } from '../../components/Card';
 import { More } from '../../components/Button';
+import { Section } from '../../components/Box';
 
 export default function View() {
   const { isHaveItem } = useStore();
-  return useObserver(() => (isHaveItem() ? <Section /> : <Loding />));
+  return useObserver(() =>
+    isHaveItem() ? (
+      <Section>
+        <CardsWrapper />
+        <More />
+      </Section>
+    ) : (
+      <Loding />
+    )
+  );
 }
-
-const Section = () => (
-  <section>
-    <CardsWrapper />
-    <More />
-  </section>
-);
 
 function CardsWrapper() {
   const { data } = useStore();
@@ -30,7 +34,7 @@ function CardsWrapper() {
   ));
 }
 
-const Loding = () => <section>Loding..</section>;
+const Loding = () => <Section>Loding..</Section>;
 
 const cardsMapper = (events: ReceivedEvents): CardProp[] =>
   events.map(({ actor, repo }) => ({
