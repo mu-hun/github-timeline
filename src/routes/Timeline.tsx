@@ -7,29 +7,18 @@ import { useObserver } from 'mobx-react';
 import { More } from '../components/Button';
 
 export default function TimeLine() {
-  const store = useStore();
-
-  const prepareToFetch = async () => {
-    await store.setToken();
-    await store.setUsername();
-  };
-
-  const fetchEvents = async () => {
-    if (store.token.length === 0) await prepareToFetch();
-    await store.updateEvents();
-  };
+  const { updateEventsInit, updateEvents, data } = useStore();
 
   useEffect(() => {
-    fetchEvents();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    updateEventsInit();
+  }, [updateEventsInit]);
 
   return useObserver(() => (
     <div>
-      {store.data.length > 0 ? (
+      {data.length > 0 ? (
         <>
-          <Cards data={store.data} />
-          <More onClick={store.updateEvents}>More</More>
+          <Cards data={data} />
+          <More onClick={updateEvents}>More</More>
         </>
       ) : (
         <span>Loding..</span>
