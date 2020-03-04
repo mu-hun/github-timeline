@@ -26,7 +26,7 @@ export default function TimeLine() {
 
   return useObserver(() => (
     <div>
-      {store.data ? (
+      {store.data.length > 0 ? (
         <>
           <Cards data={store.data} />
           <More onClick={store.updateEvents}>More</More>
