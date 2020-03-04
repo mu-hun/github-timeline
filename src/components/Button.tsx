@@ -1,7 +1,11 @@
+import React from 'react';
+
 import styled from 'styled-components';
 import { blue } from '../styles/color';
 
-export const More = styled.button`
+import { useStore } from '../store/contexts';
+
+const MoreStyled = styled.button`
   width: 100%;
   padding: 6px;
   margin-top: 20px;
@@ -17,3 +21,8 @@ export const More = styled.button`
     background-color: #f6f8fa;
   }
 `;
+
+export const More = () => {
+  const { updateEvents } = useStore();
+  return <MoreStyled onClick={updateEvents}>More</MoreStyled>;
+};

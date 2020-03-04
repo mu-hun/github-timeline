@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
+import { useStore } from '../../store/contexts';
 
-import Cards from '../components/Cards';
-
-import { useStore } from '../store/contexts';
-import { useObserver } from 'mobx-react';
-import { More } from '../components/Button';
+import View from './View';
 
 export default function TimeLine() {
   const store = useStore();
@@ -24,16 +21,5 @@ export default function TimeLine() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return useObserver(() => (
-    <div>
-      {store.data.length > 0 ? (
-        <>
-          <Cards data={store.data} />
-          <More onClick={store.updateEvents}>More</More>
-        </>
-      ) : (
-        <span>Loding..</span>
-      )}
-    </div>
-  ));
+  return <View />;
 }
