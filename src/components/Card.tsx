@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { MarginRight, Flex, BoldLink } from '../styles';
 
 type Profile = { avatarURL: string; username: string };
-type Content = { actor: string; repo: string };
+type Content = { repos: string[] };
 
-export type CardProp = { profile: Profile; content: Content };
+export type CardProp = { profile: Profile } & Content;
 
-export default function Card({ profile, content }: CardProp) {
+export default function Card({ profile, repos }: CardProp) {
   return (
     <CardWrapper>
       <Profile {...profile} />
-      <ContentWrapper {...content} />
+      <ContentWrapper actor={profile.username} repos={repos} />
     </CardWrapper>
   );
 }
@@ -36,6 +36,16 @@ const Img = styled.img`
 
 const Content = styled(Flex)`
   align-items: baseline;
+  width: 100%;
+`;
+
+const Li = styled.li<{ index: number }>`
+  display: ${({ index }) => (index === 0 ? 'inline-block' : 'block')};
+  margin-top: ${({ index }) => (index > 0 ? '0.5em' : '')};
+`;
+
+const ExpandableCardWrapper = styled.div`
+  width: 100%;
 `;
 
 const Profile = ({ avatarURL, username }: Profile) => (
@@ -48,10 +58,56 @@ const Starred = styled.span`
   margin: 0 0.2em;
 `;
 
-const ContentWrapper = ({ actor, repo }: Content) => (
-  <Content>
-    <BoldLink href={'https://github.com/' + actor}>{actor}</BoldLink>
-    <Starred>starred</Starred>
-    <BoldLink href={'https://github.com/' + repo}>{repo}</BoldLink>
-  </Content>
-);
+const ExpandableCard = ({
+  repos,
+  isExpend,
+}: {
+  repos: string[];
+  isExpend: boolean;
+}) => {
+  const range = isExpend ? [] : [0, 1];
+  return (
+    <>
+      {repos.slice(...range).map((repo, index) => (
+        <Li index={index}>
+          <BoldLink key={repo} href={'https://github.com/' + repo}>
+            {repo}
+          </BoldLink>
+        </Li>
+      ))}
+    </>
+  );
+};
+
+const ContentWrapper = ({
+  actor,
+  repos,
+}: {
+  actor: string;
+  repos: string[];
+}) => {
+  const [isExpend, setIsExpend] = useState(false);
+  const wrapper =
+    repos.length > 1 ? (
+      <ExpandableCardWrapper>
+        <Starred>starred {repos.length} repositories</Starred>
+        <ExpandableCard repos={repos} isExpend={isExpend} />
+      </ExpandableCardWrapper>
+    ) : (
+      <>
+        <Starred>starred</Starred>
+        <BoldLink href={'https://github.com/' + repos[0]}>{repos[0]}</BoldLink>
+      </>
+    );
+  return (
+    <Content>
+      <BoldLink href={'https://github.com/' + actor}>{actor}</BoldLink>
+      {wrapper}
+      {repos.length > 1 && (
+        <button onClick={_ => setIsExpend(!isExpend)}>
+          {isExpend ? 'less' : 'more'}
+        </button>
+      )}
+    </Content>
+  );
+};
