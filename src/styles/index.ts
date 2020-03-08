@@ -10,11 +10,12 @@ export const Flex = styled.div`
   display: flex;
 `;
 
-export const BoldLink = styled.a<{ isMulti?: boolean }>`
+export const BoldLink = styled.a<{ index?: number }>`
   font-weight: 600;
   text-decoration: none;
   color: ${black};
-  ${({ isMulti }) => (isMulti ? `display: block; margin-top: 0.5em` : '')};
+  ${({ index }) =>
+    typeof index === 'number' ? `display: block; margin-top: 0.5em` : ''};
   :hover {
     color: ${blue};
   }
