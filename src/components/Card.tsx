@@ -39,8 +39,9 @@ const Content = styled(Flex)`
   width: 100%;
 `;
 
-const Li = styled.li`
-  display: inline-block;
+const Li = styled.li<{ index: number }>`
+  display: ${({ index }) => (index === 0 ? 'inline-block' : 'block')};
+  margin-top: ${({ index }) => (index > 0 ? '0.5em' : '')};
 `;
 
 const ExpandableCardWrapper = styled.div`
@@ -68,8 +69,8 @@ const ExpandableCard = ({
   return (
     <>
       {repos.slice(...range).map((repo, index) => (
-        <Li>
-          <BoldLink key={repo} index={2} href={'https://github.com/' + repo}>
+        <Li index={index}>
+          <BoldLink key={repo} href={'https://github.com/' + repo}>
             {repo}
           </BoldLink>
         </Li>
