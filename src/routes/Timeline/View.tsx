@@ -23,7 +23,7 @@ function CardsWrapper() {
   const { data } = useStore();
   return useObserver(() => (
     <ul>
-      {cardsMapper(data).map((card, index) => (
+      {cardsReducer(data).map((card, index) => (
         <Card key={index} {...card} />
       ))}
     </ul>
@@ -32,8 +32,17 @@ function CardsWrapper() {
 
 const Loding = () => <section>Loding..</section>;
 
-const cardsMapper = (events: ReceivedEvents): CardProp[] =>
-  events.map(({ actor, repo }) => ({
-    profile: { avatarURL: actor.avatar_url, username: actor.login },
-    content: { actor: actor.login, repo: repo.name },
-  }));
+export const cardsReducer = (events: ReceivedEvents): CardProp[] =>
+  events.reduce((ret, { actor, repo }, index) => {
+    const arrayLen = ret.length - 1;
+    if (ret[arrayLen]?.profile.username === actor.login) {
+      ret[arrayLen].repos.push(repo.name);
+      return ret;
+    }
+
+    ret.push({
+      profile: { avatarURL: actor.avatar_url, username: actor.login },
+      repos: [repo.name],
+    });
+    return ret;
+  }, [] as CardProp[]);

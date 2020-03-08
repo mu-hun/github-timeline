@@ -4,15 +4,15 @@ import styled from 'styled-components';
 import { MarginRight, Flex, BoldLink } from '../styles';
 
 type Profile = { avatarURL: string; username: string };
-type Content = { actor: string; repo: string };
+type Content = { repos: string[] };
 
-export type CardProp = { profile: Profile; content: Content };
+export type CardProp = { profile: Profile } & Content;
 
-export default function Card({ profile, content }: CardProp) {
+export default function Card({ profile, repos }: CardProp) {
   return (
     <CardWrapper>
       <Profile {...profile} />
-      <ContentWrapper {...content} />
+      <ContentWrapper actor={profile.username} repos={repos} />
     </CardWrapper>
   );
 }
@@ -48,10 +48,37 @@ const Starred = styled.span`
   margin: 0 0.2em;
 `;
 
-const ContentWrapper = ({ actor, repo }: Content) => (
-  <Content>
-    <BoldLink href={'https://github.com/' + actor}>{actor}</BoldLink>
-    <Starred>starred</Starred>
-    <BoldLink href={'https://github.com/' + repo}>{repo}</BoldLink>
-  </Content>
-);
+const ContentWrapper = ({
+  actor,
+  repos,
+}: {
+  actor: string;
+  repos: string[];
+}) => {
+  const wrapper =
+    repos.length > 1 ? (
+      <div>
+        <Starred>starred {repos.length} repositories</Starred>
+        {repos.map((repo, index) => (
+          <BoldLink
+            key={repo}
+            isMulti={true}
+            href={'https://github.com/' + repo}
+          >
+            {repo}
+          </BoldLink>
+        ))}
+      </div>
+    ) : (
+      <>
+        <Starred>starred</Starred>
+        <BoldLink href={'https://github.com/' + repos[0]}>{repos[0]}</BoldLink>
+      </>
+    );
+  return (
+    <Content>
+      <BoldLink href={'https://github.com/' + actor}>{actor}</BoldLink>
+      {wrapper}
+    </Content>
+  );
+};
