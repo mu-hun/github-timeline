@@ -16,6 +16,7 @@ const MoreStyled = styled.button`
   border: 1px solid #e1e4e8;
   border-radius: 3px;
   font-size: 1em;
+  margin-bottom: 1em;
   :hover {
     color: ${blue};
     background-color: #f6f8fa;
