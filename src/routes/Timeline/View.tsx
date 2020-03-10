@@ -33,16 +33,16 @@ function CardsWrapper() {
 const Loding = () => <section>Loding..</section>;
 
 export const cardsReducer = (events: ReceivedEvents): CardProp[] =>
-  events.reduce((ret, { actor, repo }, index) => {
-    const arrayLen = ret.length - 1;
-    if (ret[arrayLen]?.profile.username === actor.login) {
-      ret[arrayLen].repos.push(repo.name);
-      return ret;
+  events.reduce((reduceCards, { actor, repo }, index) => {
+    const arrayLen = reduceCards.length - 1;
+    if (reduceCards[arrayLen]?.profile.username === actor.login) {
+      reduceCards[arrayLen].repos.push(repo.name);
+      return reduceCards;
     }
 
-    ret.push({
+    reduceCards.push({
       profile: { avatarURL: actor.avatar_url, username: actor.login },
       repos: [repo.name],
     });
-    return ret;
+    return reduceCards;
   }, [] as CardProp[]);
